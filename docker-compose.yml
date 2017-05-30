@@ -1,0 +1,25 @@
+version: '2'
+services:
+  fedex:
+    image: "sidharder/ap-fedex:latest"
+    ports:
+      - "50052:50052"
+    environment:
+      - AP_FEDEX_SERVICE_BINDING=0.0.0.0:50052
+      - AP_MYSQL_SERVICE_BINDING=mysql:50053
+
+  mysql:
+    image: "sidharder/ap-mysql:latest"
+    ports:
+      - "50053:50053"
+    environment:
+      - AP_MYSQL_SERVICE_BINDING=0.0.0.0:50053
+      - AP_MYSQL_HOST=10.1.2.26
+      - AP_MYSQL_USER=sqldude
+      - AP_MYSQL_PASS=123Whatsup
+      - AP_MYSQL_DATABASE=lis
+
+  job-runner:
+    image: "sidharder/ap-job-runner:latest"
+    environment:
+      - AP_FEDEX_SERVICE_BINDING=fedex:50052
