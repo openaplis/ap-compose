@@ -1,0 +1,52 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: openlis
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: openlis
+    spec:
+      containers:
+
+      - name: ap-fedex
+        image: sidharder/ap-fedex:latest
+        env:
+          -
+            name: AP_FEDEX_SERVICE_BINDING
+            value: "0.0.0.0:50052"
+          -
+            name: AP_MYSQL_SERVICE_BINDING
+            value: "localhost:50053"
+        ports:
+        - containerPort: 50052
+
+      - name: ap-mysql
+        image: sidharder/ap-mysql:latest
+        env:
+          -
+            name: AP_MYSQL_HOST
+            value: "10.1.2.26"
+          -
+            name: AP_MYSQL_USER
+            value: "sqldude"
+          -
+            name: AP_MYSQL_PASS
+            value: "123Whatsup"
+          -
+            name: AP_MYSQL_DATABASE
+            value: "lis"
+          -
+            name: AP_MYSQL_SERVICE_BINDING
+            value: "0.0.0.0:50053"
+        ports:
+        - containerPort: 50053
+
+      - name: ap-job-runner
+        image: sidharder/ap-job-runner:latest
+        env:
+          -
+            name: AP_FEDEX_SERVICE_BINDING
+            value: "localhost:50052"
