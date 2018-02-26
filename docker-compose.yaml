@@ -2,6 +2,7 @@ version: '2'
 services:
   fedex:
     image: "sidharder/ap-fedex:latest"
+    container_name: "ap-fedex"
     ports:
       - "50052:50052"
     environment:
@@ -10,6 +11,7 @@ services:
 
   mysql:
     image: "sidharder/ap-mysql:latest"
+    container_name: "ap-mysql"
     ports:
       - "50053:50053"
     environment:
@@ -21,5 +23,6 @@ services:
 
   job-runner:
     image: "sidharder/ap-job-runner:latest"
+    container_name: "ap-job-runner"
     environment:
       - AP_FEDEX_SERVICE_BINDING=fedex:50052
